@@ -1,0 +1,8 @@
+[submodule "backend"]
+    path = backend
+    url = https://github.com/bormoley1983/MEAN-Backend.git
+    branch = develop
+[submodule "frontend"]
+    path = frontend
+    url = https://github.com/bormoley1983/MEAN-Frontend.git
+    branch = develop
