@@ -20,8 +20,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: backend
-    ports:
-      # - "3000:3000"
+    #ports:
+    # - "3000:3000"
     depends_on:
       mongodb:
         condition: service_healthy
@@ -40,8 +40,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: frontend
-    ports:
-      # - "4200:4200"
+    #ports:
+    # - "4200:4200"
     networks:
       - mean-network
     depends_on:
