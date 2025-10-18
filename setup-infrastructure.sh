@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # MEAN Stack Infrastructure Setup Script
-# This script sets up the complete infrastructure repository with submodules and Docker containers
+# This script sets up the complete infrastructure repository with submodules
 
 echo "🚀 Setting up MEAN Stack Infrastructure..."
 
@@ -59,61 +59,9 @@ frontend/build/
 mongodb_data/
 EOF
 
-# Step 4: Create MongoDB init script
-echo "🗄️ Creating MongoDB initialization script..."
-cat > infra/mongodb/init-mongo.js << 'EOF'
-db = db.getSiblingDB('mean_demo');
-
-print('MongoDB initialized successfully');
-EOF
-
-# Step 5: Create Nginx config
-echo "🌐 Creating Nginx configuration..."
-cat > infra/nginx/nginx.conf << 'EOF'
-events {
-    worker_connections 1024;
-}
-
-http {
-    upstream backend {
-        server backend:3000;
-    }
-
-    upstream frontend {
-        server frontend:4200;
-    }
-
-    server {
-        listen 80;
-        server_name localhost;
-
-        location / {
-            proxy_pass http://frontend;
-            proxy_http_version 1.1;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection 'upgrade';
-            proxy_set_header Host $host;
-            proxy_cache_bypass $http_upgrade;
-        }
-
-        location /api {
-            proxy_pass http://backend;
-            proxy_http_version 1.1;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        }
-
-        location /images {
-            alias /usr/share/nginx/html/images;
-            expires 30d;
-        }
-    }
-}
-EOF
-
 echo "✅ Infrastructure setup complete!"
 echo "📋 Next steps:"
-echo "   1. Update backend and frontend Dockerfiles if needed"
-echo "   2. Run: docker-compose up --build"
-echo "   3. Access the application at http://localhost"
+echo "   1. Verify infra/mongodb/init-mongo.js exists"
+echo "   2. Verify infra/nginx/nginx.conf exists"
+echo "   3. Run: docker-compose up --build"
+echo "   4. Access the application at http://localhost"
