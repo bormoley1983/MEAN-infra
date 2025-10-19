@@ -86,6 +86,39 @@ To remove volumes and start fresh:
 docker-compose down -v
 ```
 
+## Deployment of prod on external docker server
+# install ubuntu server
+
+# update installation
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y git
+
+# install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+# Add current user to docker group (avoid sudo)
+sudo usermod -aG docker $USER
+newgrp docker
+
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+# Clone repository
+git clone https://github.com/bormoley1983/MEAN-infra.git
+cd MEAN-infra
+
+# Initialize submodules
+git submodule update --init --recursive
+
+# Build and start all services
+docker-compose up --build -d
+
+# Checks
+docker-compose ps
+
+docker-compose logs -f
+
 ## Directory Structure
 
 ```
